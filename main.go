@@ -27,6 +27,7 @@ var staticFiles embed.FS
 func unused() {
     // this function does nothing
     // and is called nowhere
+	// TODO: remove this function
 }
 
 func main() {
