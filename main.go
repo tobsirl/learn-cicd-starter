@@ -7,6 +7,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
+	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
@@ -16,6 +18,10 @@ import (
 
 	_ "github.com/tursodatabase/libsql-client-go/libsql"
 )
+
+func sanitizeLogInput(s string) string {
+	return strings.ReplaceAll(strings.ReplaceAll(s, "\n", ""), "\r", "")
+}
 
 type apiConfig struct {
 	DB *database.Queries
@@ -89,10 +95,11 @@ func main() {
 
 	router.Mount("/v1", v1Router)
 	srv := &http.Server{
-		Addr:    ":" + port,
-		Handler: router,
+		Addr:              ":" + port,
+		Handler:           router,
+		ReadHeaderTimeout: 10 * time.Second,
 	}
 
-	log.Printf("Serving on port: %s\n", port)
+	log.Printf("Serving on port: %s\n", sanitizeLogInput(port)) // #nosec G706 -- input is sanitized
 	log.Fatal(srv.ListenAndServe())
 }
