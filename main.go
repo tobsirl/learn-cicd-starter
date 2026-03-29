@@ -29,6 +29,7 @@ func unused() {
     // and is called nowhere
 	// it's just here to demonstrate that the staticFiles variable is used
 	// without this, the compiler would complain about an unused variable
+	// TODO: remove this function
 }
 
 func main() {
